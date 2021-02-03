@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+<head>
+    <link rel="stylesheet" href="project.css">
+    <title>VBIT Confessions</title>
+</head>
+
+
+
+<body>
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.5/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.5/firebase-firestore.js"></script>
+    <script src="init-firebase.js"></script>
+
+
+    <script>
+        function uploadConfession() {
+
+
+            var confessionData = document.getElementById('confessionInput').value;
+            var db = firebase.firestore();
+
+            var colRef = db.collection('Confessions');
+            colRef.add({
+                confession: confessionData,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+                .then(function (docRef) {
+                    console.log("Document written with ID: ", docRef.id);
+                    window.location.replace('index.html');
+                })
+                .catch(function (error) {
+                    console.error("Error adding document: ", error);
+                });
+
+        }
+
+    </script>
+
+
+<div class = "confessioninput-div">
+    <p id = "confesshint">Confess by Clicking in the box</p>
+    <textarea id="confessionInput" rows="25" cols="50"></textarea><br>
+    <button onclick="uploadConfession()" type="button">CONFESS !</button>
+</div>
+
+</body>
+
+</html>

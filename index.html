@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="project.css">
+
+    <title>VBIT Confessions</title>
+
+    <h1 id="mainhead">Vbit Confessions</h1>
+
+
+</head>
+
+<body>
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.5/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.5/firebase-firestore.js"></script>
+    <script src="init-firebase.js"></script>
+
+    <script>
+
+        var db = firebase.firestore();
+
+        var exRef = db.collection('Confessions').orderBy("timestamp");
+
+        var allex = exRef
+            .get()
+            .then(snapshot => {
+                snapshot.forEach(doc => {
+                    var confession = doc.data().confession;
+                    var time = doc.data().timestamp.toDate();
+
+                    var dateString = moment(time).format('DD-MM-YYYY HH:mm');
+
+                    var newData = '<p id = "confessdata">' + confession + '<br>' + dateString + '</p>';
+
+                    document.getElementById("confessions-div").insertAdjacentHTML('afterbegin', newData);
+
+                });
+            })
+            .catch(err => {
+                console.log('Error getting documents', err);
+            });
+
+
+
+    </script>
+
+    <div id="navbar">
+        <a href="confess.html">Confess</a>
+        <a href="about.html">About</a>
+
+    </div>
+
+
+    <div id="confessions-div">
+
+    </div>
+
+
+</body>
+
+</html>
